@@ -1,5 +1,7 @@
 import numpy as np
 
+np.set_printoptions(linewidth=np.inf)
+
 def generate_augmented_matrix(size=4, seed=None):
     if seed is not None:
         np.random.seed(seed)
@@ -49,50 +51,75 @@ def gauss(augmented_matrix):
                     break
             else:
                 raise ValueError(f"Error, can't find row with non zero diagonal element")
-
-        matrix[k] = matrix[k] / matrix[k][k]
-        # print(matrix)
         
         for i in range(k + 1, n):
-            factor = matrix[i][k]
+            factor = matrix[i][k]/matrix[k][k]
             matrix[i] = matrix[i] - factor * matrix[k]
-            # print(matrix)
+
+        print(matrix)
+    
+    det = 1;
+    for a in range(n):
+        print(matrix[a][a])
+        det *= matrix[a][a]
+    print("determinant", det)
 
     for k in range(n - 1, -1, -1):
         for i in range(k - 1, -1, -1):
-            factor = matrix[i][k]
+            factor = matrix[i][k]/matrix[k][k]
             matrix[i] = matrix[i] - factor * matrix[k]
-            # print(matrix)
+
+        # print(matrix)
 
     m = np.array([row[:-1] for row in augmented_matrix], dtype=float)
-    # note: we use whole numbers for matrices
-    print("determinant: " , int(np.linalg.det(m)))
-    print("inv:\n", np.linalg.inv(m))
+    # print("inv:\n", np.linalg.inv(m))
+    # print("---")
+    print("inv", gauss_inv(m))
 
-    return matrix[:, -1]
+    for a in range(n):
+        matrix[a] /= matrix[a][a]
+
+    return det, matrix[:, -1]
+
+
+def gauss_inv(matrix):
+    np.set_printoptions(suppress=True, precision=8)
+    n = len(matrix)
+    augmented_matrix = np.hstack((np.array(matrix, dtype=np.double), np.eye(n, dtype=np.double)))
+    print("augmented")
+    print(augmented_matrix)
+
+    for k in range(n):
+        if augmented_matrix[k][k] == 0:
+            for i in range(k + 1, n):
+                if augmented_matrix[i][k] != 0:
+                    augmented_matrix[[k, i]] = augmented_matrix[[i, k]]
+                    break
+            else:
+                raise ValueError("Error: can't find row with non-zero diagonal element.")
+        
+        augmented_matrix[k] = augmented_matrix[k] / augmented_matrix[k][k]
+        
+        for i in range(k + 1, n):
+            factor = augmented_matrix[i][k]
+            augmented_matrix[i] -= factor * augmented_matrix[k]
+
+        print(augmented_matrix)
+    
+    for k in range(n - 1, -1, -1):
+        for i in range(k - 1, -1, -1):
+            factor = augmented_matrix[i][k]
+            augmented_matrix[i] -= factor * augmented_matrix[k]
+
+    print(augmented_matrix)
+    return augmented_matrix[:, n:]
 
 def check_solution(augmented_matrix, solution):
-    print(solution)
+    print("sol", solution)
     n = len(augmented_matrix)
     for i in range(n):
         equation_sum = sum(augmented_matrix[i][j] * solution[j] for j in range(n))
         print(f"Рівняння {i + 1}: {equation_sum} = {augmented_matrix[i][-1]}")
-
-# def seidel(augmented_matrix, tol=10e-5, max_iterations=1000):
-#     for k in range(max_iterations):
-#         iteration_count += 1
-#         x_old = x.copy()
-#
-#         for i in range(len(b)):
-#             sigma = 0
-#             for j in range(len(b)):
-#                 if j != i:
-#                     sigma += A[i, j] * x[j]
-#
-#             x[i] = (b[i] - sigma) / A[i, i]
-#
-#         if np.linalg.norm(x - x_old, ord=np.inf) < tolerance:
-#             break
 
 def seidel(augmented_matrix, tol=10e-5, max_iterations=1000):
     A = np.array([row[:-1] for row in augmented_matrix], dtype=float)
@@ -192,17 +219,24 @@ while (True):
 
     if (mode == "1"):
         print(augmented_matrix)
-        result = gauss(augmented_matrix)
-        print("gauss: ", result)
+        det, result = gauss(augmented_matrix)
+        with np.printoptions(precision=15):
+            print(result)
+        # check_solution(augmented_matrix, result)
     elif (mode == "2"):
         print(augmented_matrix)
         tol = float(input("tol : "))
         result = seidel(augmented_matrix, tol=tol)
-        print("seidel: ", result)
+        with np.printoptions(precision=15):
+            print(result)
+
+        # check_solution(augmented_matrix, result)
     elif (mode == "3"):
         matrix = generate_tridiagonal_augmented_matrix(seed=seed)
         print(matrix)
         result = tridiagonal_matrix_algorithm(matrix)
-        print("Thomas: ", result)
+        with np.printoptions(precision=15):
+            print("Thomas: ", result)
+
 
     break
