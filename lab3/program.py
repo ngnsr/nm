@@ -1,6 +1,7 @@
 import numpy as np
+from numpy.linalg import inv
 
-def iterative_method(f, x0, tol=1e-6, max_iterations=1000):
+def iterative_method(f, x0, tol=1e-4, max_iterations=100):
     x = x0
 
     print(f"{'Iteration':^10} | {'x_new':^40} | {'Norm':^10}")
@@ -8,7 +9,10 @@ def iterative_method(f, x0, tol=1e-6, max_iterations=1000):
 
     print(f"{0:<10} | {np.array2string(x, precision=6, floatmode='fixed', suppress_small=True):<40} | -")
     for iteration in range(max_iterations):
-        x_new = f(x)
+
+        f_x_T = np.transpose(f(x))
+        invC = inv(C(x))
+        x_new = x - invC @ f_x_T
         
         norm = np.linalg.norm(x_new - x, ord=np.inf)
 
@@ -26,7 +30,7 @@ def iterative_method(f, x0, tol=1e-6, max_iterations=1000):
 def modified_newton_method(f, A, x0, tol=1e-6, max_iterations=1000):
     x = x0
 
-    invA = np.linalg.inv(A(np.transpose(x)))
+    invA = inv(A(np.transpose(x)))
 
     print(f"{'Iteration':^10} | {'x_new':^40} | {'Norm':^10}")
     print("-" * 70)
@@ -60,6 +64,13 @@ def f(x):
         (4*x[2] + x[0]**2 - x[1])                   # 4*x3 + x1^2    - x2       = 0
     ])
 
+def C(x):
+    return np.array([
+        [-1/(x[0]*0.7 + 0.01), 2/(x[1]*5e-1), 3/(x[2]*9e-1)],
+        [3/(x[0]*0.7), 2/(x[1]*5e-1 + 0.01), -2/(x[2]*9e-1)],
+        [2/(x[0]*0.7), 3/(x[1]*5e-1), -2/(x[2]*9e-1)],
+    ])
+
 def A(x):
     x1, x2, x3 = x
     
@@ -71,7 +82,7 @@ def A(x):
     
     return J
 
-x0 = np.array([0,0,0])
+x0 = np.array([0.5,-0.5, -0.5])
 
 print("Iterative method")
 result = iterative_method(fi, x0)
