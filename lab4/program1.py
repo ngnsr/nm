@@ -1,8 +1,14 @@
 import numpy as np
 import pandas as pd
+import sys
 import matplotlib.pyplot as plt
 from PyQt5.QtCore import QLoggingCategory
 QLoggingCategory.setFilterRules("qt.*=false")
+
+np.set_printoptions(linewidth=np.inf, threshold=sys.maxsize)
+
+pd.set_option('display.max_columns', None)
+pd.set_option('display.max_rows', None)
 
 def f(x):
     return np.tan(x)
@@ -48,9 +54,9 @@ def newton_polynom_to_str(n, div_diff):
     simplified_polynomial = " + ".join(f"{coef:.4f} * {key}" for key, coef in polynomial_terms.items())
     return simplified_polynomial
 
-display_start = -1e-15
-display_end = 1e-15
-x_plot = np.linspace(display_start, display_end, 1000)  
+display_start =0.5 - 0.5e-13
+display_end = 0.5
+x_plot = np.linspace(display_start, display_end, 10000)  
 y_interpolated = [newton_polynomial(x, x_values, div_diff) for x in x_plot]
 y_true = f(x_plot)
 
@@ -77,8 +83,8 @@ plt.grid(True)
 
 
 plt.subplot(2, 1, 2)  
+plt.ylim(0, 1e-15)  
 plt.plot(x_plot, absolute_error, label='Абсолютна похибка', color='red')
-plt.ylim(0, 0.2e-15)  
 plt.title("Абсолютна похибка між tan(x) та інтерполяційним поліном")
 plt.xlabel('x')
 plt.ylabel('Абсолютна похибка')
