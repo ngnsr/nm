@@ -1,19 +1,19 @@
 import numpy as np
 from numpy.linalg import inv
 
-def iterative_method(f, x0, tol=1e-4, max_iterations=100):
+np.set_printoptions(linewidth=np.inf, precision=16)
+def iterative_method(f, x0, tol=1e-4, max_iterations=50):
     x = x0
 
     print(f"{'Iteration':^10} | {'x_new':^40} | {'Norm':^10}")
     print("-" * 70)
 
     print(f"{0:<10} | {np.array2string(x, precision=6, floatmode='fixed', suppress_small=True):<40} | -")
-    for iteration in range(max_iterations):
 
+    for iteration in range(max_iterations):
         f_x_T = np.transpose(f(x))
-        invC = inv(C(x))
-        x_new = x - invC @ f_x_T
-        
+        x_new = x - C(x) @ f_x_T
+
         norm = np.linalg.norm(x_new - x, ord=np.inf)
 
         print(f"{iteration + 1:<10} | {np.array2string(x_new, precision=6, floatmode='fixed', suppress_small=True):<40} | {norm:<10.9f}")
@@ -29,8 +29,9 @@ def iterative_method(f, x0, tol=1e-4, max_iterations=100):
 
 def modified_newton_method(f, A, x0, tol=1e-6, max_iterations=1000):
     x = x0
-
+    print(A(np.transpose(x)))
     invA = inv(A(np.transpose(x)))
+    print(invA)
 
     print(f"{'Iteration':^10} | {'x_new':^40} | {'Norm':^10}")
     print("-" * 70)
@@ -50,13 +51,6 @@ def modified_newton_method(f, A, x0, tol=1e-6, max_iterations=1000):
 
     raise ValueError("Метод не збігається після максимальної кількості ітерацій.")
 
-def fi(x):
-    return np.array([
-        (np.sin(x[1]) + 1/np.exp(x[2])) / 3,        # x1 = (sin(x2) + 1/e^x3)/3 = 0
-        (-np.cos(x[0]) + x[2]**2) / 5,              # x2 = (-cos(x1) + x3^2)/5  = 0
-        (-x[0]**2 + x[1]) / 4                       # x3 = (-(x1^2) + x2)/4     = 0
-    ])
-
 def f(x):
     return np.array([
         (3*x[0] - np.sin(x[1]) - 1/np.exp(x[2])),   # 3*x1 - sin(x2) - 1/e^x3   = 0
@@ -66,9 +60,9 @@ def f(x):
 
 def C(x):
     return np.array([
-        [-1/(x[0]*0.7 + 0.01), 2/(x[1]*5e-1), 3/(x[2]*9e-1)],
-        [3/(x[0]*0.7), 2/(x[1]*5e-1 + 0.01), -2/(x[2]*9e-1)],
-        [2/(x[0]*0.7), 3/(x[1]*5e-1), -2/(x[2]*9e-1)],
+        [0.1 + x[0]/1000, 0, 0],
+        [0, 0.1 + x[1]/1000, 0],
+        [0, 0, 0.1 + x[2]/1000]
     ])
 
 def A(x):
@@ -85,7 +79,7 @@ def A(x):
 x0 = np.array([0.5,-0.5, -0.5])
 
 print("Iterative method")
-result = iterative_method(fi, x0)
+result = iterative_method(f, x0)
 print("Розв'язок:", result)
 print(f"f(result) = {f(result)}")
 
