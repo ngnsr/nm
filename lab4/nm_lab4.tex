@@ -1,12 +1,14 @@
 \documentclass[a4paper, 12pt]{article}
-\usepackage{graphicx}
 \usepackage[utf8]{inputenc}
+\usepackage[T2A]{fontenc}
 \usepackage[ukrainian]{babel}
+\usepackage{graphicx}
 \usepackage{amsmath}
-\usepackage{fancyhdr}
 \usepackage{geometry}
+% \usepackage{fancyhdr}
+% \usepackage{bookmark}
 \geometry{top=2cm, bottom=2cm, left=3cm, right=1.5cm}
-\usepackage[colorlinks=true,linkcolor=blue]{hyperref}%
+\usepackage[colorlinks=true, linkcolor=blue, urlcolor=blue, citecolor=blue]{hyperref}
 \begin{document}
 
 \begin{titlepage}
@@ -61,16 +63,16 @@ tg(x), x in [-0.5, 0.5]
 
 \begin{figure}[ht]
 	\centering
-	\includegraphics[width=0.7\linewidth]{inter1.png}
+	\includegraphics[width=0.7\linewidth]{./img/inter1.png}
 \end{figure}
 \begin{figure}[ht]
 	\centering
-	\includegraphics[width=0.7\linewidth]{inter2.png}
+	\includegraphics[width=0.7\linewidth]{./img/inter2.png}
 \end{figure}
 
 \begin{figure}[ht]
 	\centering
-	\includegraphics[width=0.8\linewidth]{inter3.png}
+	\includegraphics[width=0.8\linewidth]{./img/inter3.png}
 \end{figure}
 \clearpage
 \newpage
@@ -81,20 +83,22 @@ tg(x), x in [-0.5, 0.5]
 
 \begin{figure}[ht]
 	\centering
-	\includegraphics[width=0.8\linewidth]{rev_inter1.png}
+	\includegraphics[width=0.8\linewidth]{./img/rev_inter1.png}
 \end{figure}
 
 \newpage
 \section{Результати роботи програми}
 
-Лабораторна робота реалізує інтерполяційні методи для табличної функції, отриманої з аналітичної функції \( \tan(x) \) на проміжку \([-0.5, 0.5]\). Для цього було обрано 30 рівномірно розподілених точок на вказаному проміжку. 
+Лабораторна робота реалізує інтерполяційні методи для табличної функції, отриманої з аналітичної функції \( \tan(x) \) на проміжку \([-0.5, 0.5]\).
+
+Для цього було обрано 29 рівномірно розподілених точок на вказаному проміжку. 
 
 \subsection{Таблиця розділених різниць}
 
 Під час реалізації методу Ньютона було сформовано таблицю розділених різниць, представлена нижче:
 
-\begin{table}[h]
-    \centering
+\hspace*{-2cm}
+\begin{table}[ht]
     \begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|}
         \hline
         \textbf{i} & \( x \) & \( f(x_0, \ldots, x_0) \) & \( f(x_0, \ldots, x_1) \) & \( f(x_0, \ldots, x_2) \) & \( f(x_0, \ldots, x_3) \) & \ldots & \( f(x_0, \ldots, x_{29}) \) \\
@@ -110,8 +114,10 @@ tg(x), x in [-0.5, 0.5]
         29 & 0.500000 & 0.546302 & 0.000000 & 0.000000 & 0.000000 & \ldots & 0.000000 \\
         \hline
     \end{tabular}
-    \caption{Таблиця розділених різниць для функції \( \tan(x) \)}
+    \caption{Зменшена таблиця розділених різниць для функції \( \tan(x) \)}
 \end{table}
+
+\hyperref[sec:table1]{Дивитись повну таблицю}.
 
 \begin{quote}
 \textit{Поліном :} 
@@ -121,9 +127,49 @@ tg(x), x in [-0.5, 0.5]
 1.2749 * \( x^1 \) + -0.6298 * \( x^2 \) + 0.6968 * \( x^3 \) + -0.4916 * \( x^4 \) + 0.4368 * \( x^5 \) + -0.3200 * \( x^6 \) + 0.2554 * \( x^7 \) + -0.1834 * \( x^8 \) + 0.1363 * \( x^9 \) + -0.0943 * \( x^{10} \) + 0.0661 * \( x^{11} \) + -0.0439 * \( x^{12} \) + 0.0291 * \( x^{13} \) + -0.0179 * \( x^{14} \) + 0.0094 * \( x^{15} \) + 0.0007 * \( x^{16} \) + -0.0194 * \( x^{17} \) + 0.0628 * \( x^{18} \) + -0.1646 * \( x^{19} \) + 0.3880 * \( x^{20} \) + -0.8354 * \( x^{21} \) + 1.6345 * \( x^{22} \) + -2.8578 * \( x^{23} \) + 4.3016 * \( x^{24} \) + -5.0420 * \( x^{25} \) + 2.7506 * \( x^{26} \) + 7.0514 * \( x^{27} \) + -31.2570 * \( x^{28} \) + 78.0024 * \( x^{29} \)
 \end{quote}
 
+\newpage
+\begin{figure}[ht]
+	\centering
+	\includegraphics[width=1\linewidth]{./img/program1_out.png}
+\end{figure}
+
+\begin{figure}[ht]
+	\centering
+	\includegraphics[width=1\linewidth]{./img/program1_out_err.png}
+\end{figure}
+
+
+\newpage
 \subsection{Обернена інтерполяція}
 
-Для оберненої інтерполяції було вибрано значення \( y = 0.18 \). Розв'язок рівняння дає:
+Для оберненої інтерполяції було вибрано значення \( y = 0.18 \). \\
+Так як функція \(tan(x)\) монотонна на всьому проміжку. Поміняємо \(x\) і \(f(x)\) у табличній функції місцями. \\
+Після цього застосуємо алгоритм інтерполяції. \\
+
+\hspace*{-2cm}
+\begin{table}[ht]
+    \centering
+    \begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|}
+        \hline
+        \textbf{i} & \( x \) & \( f(x_0, \ldots, x_0) \) & \( f(x_0, \ldots, x_1) \) & \( f(x_0, \ldots, x_2) \) & \( f(x_0, \ldots, x_3) \) & \ldots & \( f(x_0, \ldots, x_{29}) \) \\
+        \hline
+	0 & -0.546302 & -0.500000 &  0.784354 & 0.320071 & -0.054428 & \ldots & -21.879061 \\
+	1 & -0.502339 & -0.465517 & 0.812017 & 0.313128 & -0.082483 & \ldots & 0.000000 \\
+	2 & -0.459874 & -0.431034 & 0.838196 & 0.302935 & -0.111744 & \ldots & 0.000000 \\
+	3 & -0.418734 & -0.396552 & 0.862767 & 0.289521 & -0.141602 & \ldots & 0.000000 \\
+	4 & -0.378767 & -0.362069 & 0.885611 & 0.272962 & -0.171403 & \ldots & 0.000000 \\
+        \hline
+		\ldots & \ldots & \ldots & \ldots & \ldots & \ldots & \ldots & \ldots \\
+        \hline
+        29 & 0.546302 & 0.500000 & 0.000000 & 0.000000 & 0.000000 & \ldots & 0.000000 \\
+        \hline
+    \end{tabular}
+    \caption{Зменшена таблиця розділених різниць для функції \( \arctan(x) \)}
+\end{table}
+
+\hyperref[sec:table2]{Дивитись повну таблицю}.
+
+Розв'язок рівняння дає:
 
 \begin{quote}
 \textit{Значення \( x \) для \( y = 0.18 \):} 0.17809283896009326
@@ -135,7 +181,54 @@ tg(x), x in [-0.5, 0.5]
 \( f(0.17809283896009326) = 0.17999989751251377 \)
 \end{quote}
 
+\clearpage
+\newpage
+\section{Таблиці розділених різниць tan(x)} \label{sec:table1}
 
+\begin{figure}[ht]
+	\centering
+	\includegraphics[width=1\linewidth]{./img/t11.png}
+\end{figure}
+
+\begin{figure}[ht]
+	\centering
+	\includegraphics[width=1\linewidth]{./img/t12.png}
+\end{figure}
+
+\begin{figure}[ht]
+	\centering
+	\includegraphics[width=1\linewidth]{./img/t13-4.png}
+\end{figure}
+
+\begin{figure}[ht]
+	\centering
+	\includegraphics[width=1\linewidth]{./img/t15.png}
+\end{figure}
+
+\clearpage
+\newpage
+\section{Таблиці розділених різниць arctan(x)} \label{sec:table2}
+\begin{figure}[ht]
+	\centering
+	\includegraphics[width=1\linewidth]{./img/t21.png}
+\end{figure}
+
+\begin{figure}[ht]
+	\centering
+	\includegraphics[width=1\linewidth]{./img/t22.png}
+\end{figure}
+
+\begin{figure}[ht]
+	\centering
+	\includegraphics[width=1\linewidth]{./img/t23-4.png}
+\end{figure}
+
+\begin{figure}[ht]
+	\centering
+	\includegraphics[width=1\linewidth]{./img/t25.png}
+\end{figure}
+
+\clearpage
 \newpage
 \section{Висновок}
 

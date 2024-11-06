@@ -1,8 +1,8 @@
 #!/bin/bash
 
-input_file="program1.out"
+input_file="program2.out"
 
-output_file="output.tex"
+output_file="output2.tex"
 
 cat << EOF > "$output_file"
 \documentclass{article}
@@ -10,8 +10,8 @@ cat << EOF > "$output_file"
 \usepackage{array}
 \begin{document}
 \begin{table}[h!]
-\centering
-\begin{tabular}{|c|c|c|c|c|c|}
+\hspace*{-2cm}
+\begin{tabular}{|c|c|c|c|c|c|c|c|}
 \hline
 EOF
 
@@ -21,8 +21,8 @@ closeTableStartTable() {
 \end{table}
 
 \begin{table}[h!]
-\centering
-\begin{tabular}{|c|c|c|c|c|c|}
+\hspace*{-2cm}
+\begin{tabular}{|c|c|c|c|c|c|c|c|}
 \hline
 EOF
 }

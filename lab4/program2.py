@@ -6,6 +6,7 @@ import sys
 
 np.set_printoptions(linewidth=np.inf, threshold=sys.maxsize)
 
+pd.set_option('display.width', 120) 
 pd.set_option('display.max_columns', None)
 pd.set_option('display.max_rows', None)
 
