@@ -30,6 +30,19 @@ for j in range(1, n):
     for i in range(n - j):
         div_diff[i][j] = (div_diff[i + 1][j - 1] - div_diff[i][j - 1]) / (x_values[i + j] - x_values[i])
 
+full_newton_polynomial_str = f"{div_diff[0, 0]:.5f}"
+
+product_terms = ""  
+for j in range(1, n):
+    if(x_values[j - 1] > 0):
+        product_terms += f"(x - {x_values[j - 1]:.4f})"
+    else:
+        product_terms += f"(x - ({x_values[j - 1]:.4f}))"
+
+    full_newton_polynomial_str += f" + ({div_diff[0, j]:.4f}) * {product_terms}"
+
+print(full_newton_polynomial_str)
+
 def newton_polynomial(x, x_values, div_diff):
     n = len(x_values)
     result = div_diff[0, 0]
